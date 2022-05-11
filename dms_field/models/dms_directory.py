@@ -1,5 +1,5 @@
 # Copyright 2020 Creu Blanca
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
@@ -78,20 +78,6 @@ class DmsDirectory(models.Model):
             "children": directory.count_elements > 0,
         }
 
-    def _build_documents_view_initial(self):
-        if len(self) == 1:
-            return [self._build_documents_view_directory(self)]
-        else:
-            initial_data = []
-            subdirectories = self.env["dms.directory"]
-            for record in self.with_context(prefetch_fields=False):
-                subdirectories |= (
-                    record.search([("parent_id", "child_of", record.id)]) - record
-                )
-            for record in self - subdirectories:
-                initial_data.append(record._build_documents_view_directory(record))
-            return initial_data
-
     @api.model
     def _check_parent_field(self):
         if self._parent_name not in self._fields:
@@ -165,18 +151,16 @@ class DmsDirectory(models.Model):
         from_clause, where_clause, where_clause_arguments = query.get_sql()
         parent_where = where_clause and (" WHERE %s" % where_clause) or ""
         parent_query = 'SELECT "%s".id FROM ' % self._table + from_clause + parent_where
-        no_parent_clause = '"{table}"."{field}" IS NULL'.format(
-            table=self._table, field=self._parent_name
-        )
+        no_parent_clause = f'"{self._table}"."{self._parent_name}" IS NULL'
         no_access_clause = '"{table}"."{field}" NOT IN ({query})'.format(
             table=self._table, field=self._parent_name, query=parent_query
         )
-        parent_clause = "({} OR {})".format(no_parent_clause, no_access_clause)
+        parent_clause = f"({no_parent_clause} OR {no_access_clause})"
         order_by = self._generate_order_by(order, query)
         from_clause, where_clause, where_clause_params = query.get_sql()
         where_str = (
             where_clause
-            and (" WHERE {} AND {}".format(where_clause, parent_clause))
+            and (f" WHERE {where_clause} AND {parent_clause}")
             or (" WHERE %s" % parent_clause)
         )
         if count:
@@ -202,47 +186,3 @@ class DmsDirectory(models.Model):
         # pylint: disable=sql-injection
         self._cr.execute(query_str, complete_where_clause_params)
         return list({x[0] for x in self._cr.fetchall()})
-
-    @api.model
-    def search_childs(
-        self, parent_id, domain=False, offset=0, limit=None, order=None, count=False
-    ):
-        """This method finds the direct child elements of the parent
-        record for a given search query.
-
-        :param parent_id: the integer representing the ID of the parent record
-        :param domain: a search domain <reference/orm/domains> (default: empty list)
-        :param offset: the number of results to ignore (default: none)
-        :param limit: maximum number of records to return (default: all)
-        :param order: a string to define the sort order of the query
-             (default: none)
-        :param count: counts and returns the number of matching records
-             (default: False)
-        :returns: the top level elements for the given search query
-        """
-        if not domain:
-            domain = []
-        domain = self._build_search_childs_domain(parent_id, domain=domain)
-        return self.search(domain, offset=offset, limit=limit, order=order, count=count)
-
-    @api.model
-    def search_read_childs(
-        self, parent_id, domain=False, fields=None, offset=0, limit=None, order=None
-    ):
-        """This method finds the direct child elements of the parent
-        record for a given search query.
-
-        :param parent_id: the integer representing the ID of the parent record
-        :param domain: a search domain <reference/orm/domains> (default: empty list)
-        :param fields: a list of fields to read (default: all fields of the model)
-        :param offset: the number of results to ignore (default: none)
-        :param limit: maximum number of records to return (default: all)
-        :param order: a string to define the sort order of the query (default: none)
-        :returns: the top level elements for the given search query
-        """
-        if not domain:
-            domain = []
-        domain = self._build_search_childs_domain(parent_id, domain=domain)
-        return self.search_read(
-            domain=domain, fields=fields, offset=offset, limit=limit, order=order
-        )

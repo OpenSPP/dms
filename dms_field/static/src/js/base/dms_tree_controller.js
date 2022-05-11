@@ -39,10 +39,11 @@ odoo.define("dms.DmsTreeController", function (require) {
                     ["child_directory_ids", "in", params.initialState.res_ids],
                 ];
             } else {
-                storage_domain = [["model_ids.model", "=", model]];
+                storage_domain = [["model", "=", model]];
                 autocompute_directory = true;
                 show_storage = false;
             }
+            console.log(params);
             this.params = $.extend(
                 true,
                 {},
@@ -63,8 +64,7 @@ odoo.define("dms.DmsTreeController", function (require) {
                         show: true,
                     },
                     initial: undefined,
-                },
-                params || {}
+                }
             );
         },
         _onDMSLoad: function (ev) {
@@ -408,7 +408,7 @@ odoo.define("dms.DmsTreeController", function (require) {
                 ? "directory_" + directory.parent_id[0]
                 : "#";
             var directoryNode = {
-                id: "directory_" + directory.id,
+                id: dt.id,
                 text: directory.name,
                 icon: "fa fa-folder-o",
                 type: "directory",
@@ -448,7 +448,7 @@ odoo.define("dms.DmsTreeController", function (require) {
             return {
                 id: dt.id,
                 text: dt.data.display_name,
-                icon: mimetype.mimetype2fa(dt.data.res_mimetype, {prefix: "fa fa-"}),
+                icon: mimetype.mimetype2fa(dt.data.mimetype, {prefix: "fa fa-"}),
                 type: "file",
                 data: dt,
             };
@@ -456,7 +456,8 @@ odoo.define("dms.DmsTreeController", function (require) {
         _onDMSPreviewFile: function (ev) {
             var record = this._getDataPoint(ev.data.id, {raw: true});
             var fieldName = "content";
-            var file_mimetype = record.data.res_mimetype;
+            console.log(record.data);
+            var file_mimetype = record.data.mimetype;
             var type = file_mimetype.split("/").shift();
             if (
                 type === "video" ||
@@ -467,9 +468,9 @@ odoo.define("dms.DmsTreeController", function (require) {
                     this,
                     [
                         {
-                            mimetype: record.data.res_mimetype,
+                            mimetype: record.data.mimetype,
                             id: record.data.id,
-                            fileType: record.data.res_mimetype,
+                            fileType: record.data.mimetype,
                             name: record.data.name,
                         },
                     ],
