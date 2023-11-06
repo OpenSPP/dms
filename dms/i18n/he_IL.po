@@ -241,8 +241,8 @@ msgid "A file with the same name already exists"
 msgstr ""
 
 #. module: dms
-#. odoo-javascript
 #. odoo-python
+#. odoo-javascript
 #: code:addons/dms/models/dms_file.py:0
 #: code:addons/dms/static/src/js/views/dms_file_upload.esm.js:0
 #, python-format
@@ -1462,6 +1462,7 @@ msgstr ""
 
 #. module: dms
 #: model:ir.model.fields,field_description:dms.field_dms_directory__model_id
+#: model:ir.model.fields,field_description:dms.field_dms_storage__model
 msgid "Model"
 msgstr ""
 
@@ -1769,6 +1770,11 @@ msgstr "משתמש אחראי"
 #: model_terms:ir.ui.view,arch_db:dms.view_dms_storage_form
 msgid "Root Directories"
 msgstr "ספרייה ראשית"
+
+#. module: dms
+#: model:ir.model.fields,field_description:dms.field_dms_directory__root_directory_id
+msgid "Root Directory"
+msgstr ""
 
 #. module: dms
 #: model:dms.tag,name:dms.tag_04_demo
