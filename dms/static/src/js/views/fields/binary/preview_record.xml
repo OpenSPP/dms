@@ -5,7 +5,6 @@
         t-name="dms.FilePreviewField"
         t-inherit="web.BinaryField"
         t-inherit-mode="primary"
-        owl="1"
     >
         <xpath expr="//div[hasclass('d-inline-flex')]" position="inside">
             <t

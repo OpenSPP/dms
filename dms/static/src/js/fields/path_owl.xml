@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="dms.DmsPathField" owl="1">
+    <t t-name="dms.DmsPathField">
 
         <t t-set="path_length" t-value="data.length - 1" />
         <t t-foreach="data" t-as="elem" t-key="elem_index" style="display: inline">

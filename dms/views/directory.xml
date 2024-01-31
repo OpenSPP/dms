@@ -18,8 +18,8 @@
         </field>
         <field name="context">
             {
-                'default_parent_id': active_id,
-                'searchpanel_default_parent_id': active_id
+                'default_parent_id': id,
+                'searchpanel_default_parent_id': id
             }
         </field>
         <field name="help" type="html">
@@ -43,8 +43,8 @@
         </field>
         <field name="context">
             {
-                'default_directory_id': active_id,
-                'searchpanel_default_directory_id': active_id
+                'default_directory_id': id,
+                'searchpanel_default_directory_id': id
             }
         </field>
         <field name="help" type="html">
@@ -62,14 +62,14 @@
         <field name="view_mode">kanban,tree,form</field>
         <field name="domain">
             [
-            ("parent_id", "child_of", active_id),
+            ("parent_id", "child_of", id),
             ("is_hidden", "=", False),
-            ("id", "!=", active_id),
+            ("id", "!=", id),
             ]
         </field>
         <field name="context">
             {
-            'default_parent_id': active_id,
+            'default_parent_id': id,
             }
         </field>
         <field name="help" type="html">
@@ -93,8 +93,8 @@
         </field>
         <field name="context">
             {
-            'default_directory_id': active_id,
-            'searchpanel_default_directory_id': active_id
+            'default_directory_id': id,
+            'searchpanel_default_directory_id': id
             }
         </field>
         <field name="help" type="html">
@@ -456,14 +456,16 @@
                             <field
                                 name="storage_id"
                                 options="{'no_open': True}"
-                                attrs="{'readonly':[('is_root_directory','=',False)], 'required':[('is_root_directory','=',True)]}"
+                                readonly="not is_root_directory"
+                                required="is_root_directory"
                                 force_save="1"
                                 groups="!dms.group_dms_manager"
                             />
                             <field
                                 name="storage_id"
                                 options="{}"
-                                attrs="{'readonly':[('is_root_directory','=',False)], 'required':[('is_root_directory','=',True)]}"
+                                readonly="not is_root_directory"
+                                required="is_root_directory"
                                 force_save="1"
                                 groups="dms.group_dms_manager"
                             />
@@ -473,7 +475,8 @@
                             <field
                                 name="parent_id"
                                 options="{'no_quick_create': True}"
-                                attrs="{'invisible':[('is_root_directory','=',True)], 'required':[('is_root_directory','=',False)]}"
+                                invisible="is_root_directory"
+                                required="not is_root_directory"
                             />
                         </group>
                     </group>
@@ -506,25 +509,27 @@
                         <field name="allowed_model_ids" invisible="True" />
                         <field
                             name="model_id"
-                            attrs="{'invisible': [('storage_id_save_type', '!=', 'attachment')], 'readonly': [('count_total_files', '>', 0)], 'required': [('storage_id_save_type','=','attachment')]}"
+                            invisible="storage_id_save_type != 'attachment'"
+                            readonly="count_total_files > 0"
+                            required="storage_id_save_type == 'attachment'"
                         />
                         <field name="res_model" invisible="1" force_save="1" />
                         <field
                             name="res_id"
                             readonly="True"
-                            attrs="{'invisible': [('storage_id_save_type', '!=', 'attachment')]}"
+                            invisible="storage_id_save_type != 'attachment'"
                         />
                         <field
                             name="record_ref"
-                            attrs="{'invisible': [('storage_id_save_type', '!=', 'attachment')]}"
+                            invisible="storage_id_save_type != 'attachment'"
                         />
                     </group>
                     <notebook>
                         <page name="page_directories" string="Subdirectories">
                             <field
                                 name="child_directory_ids"
-                                context="{'default_parent_id': active_id, 'mail_create_nolog': True}"
-                                attrs="{'readonly':[('permission_create','=',False)]}"
+                                context="{'default_parent_id': id, 'mail_create_nolog': True}"
+                                readonly="not permission_create"
                             >
                                 <tree limit="10">
                                     <field name="name" />
@@ -540,8 +545,8 @@
                         <page name="page_files" string="Files">
                             <field
                                 name="file_ids"
-                                context="{'default_directory_id': active_id, 'mail_create_nolog': True}"
-                                attrs="{'readonly':[('permission_create','=',False)]}"
+                                context="{'default_directory_id': id, 'mail_create_nolog': True}"
+                                readonly="not permission_create"
                             >
                                 <tree limit="10">
                                     <field name="name" />
@@ -577,7 +582,7 @@
                         </page>
                         <page
                             string="Groups"
-                            attrs="{'invisible':[('storage_id_save_type', '=', 'attachment'),('storage_id_inherit_access_from_parent_record', '=', True)]}"
+                            invisible="storage_id_save_type == 'attachment' and storage_id_inherit_access_from_parent_record"
                         >
                             <field name="group_ids">
                                 <tree>
@@ -590,7 +595,7 @@
                         </page>
                         <page
                             string="Complete Groups"
-                            attrs="{'invisible':[('storage_id_save_type', '=', 'attachment'),('storage_id_inherit_access_from_parent_record', '=', True)]}"
+                            invisible="storage_id_save_type == 'attachment' and storage_id_inherit_access_from_parent_record"
                         >
                             <field name="complete_group_ids">
                                 <tree>
@@ -698,7 +703,8 @@
                         <field
                             name="storage_id"
                             options="{'no_quick_create': True}"
-                            attrs="{'readonly':[('is_root_directory','=',False)], 'required':[('is_root_directory','=',True)]}"
+                            readonly="not is_root_directory"
+                            required="is_root_directory"
                             force_save="1"
                         />
                     </group>

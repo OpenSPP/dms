@@ -107,12 +107,11 @@ class File(models.Model):
 
     checksum = fields.Char(string="Checksum/SHA1", readonly=True, index="btree")
 
-    content_binary = fields.Binary(attachment=False, prefetch=False, invisible=True)
+    content_binary = fields.Binary(attachment=False, prefetch=False)
 
     save_type = fields.Char(
         compute="_compute_save_type",
         string="Current Save Type",
-        invisible=True,
         prefetch=False,
     )
 
@@ -127,7 +126,7 @@ class File(models.Model):
         compute="_compute_migration", store=True, compute_sudo=True
     )
 
-    content_file = fields.Binary(attachment=True, prefetch=False, invisible=True)
+    content_file = fields.Binary(attachment=True, prefetch=False)
 
     # Extend inherited field(s)
     image_1920 = fields.Image(compute="_compute_image_1920", store=True, readonly=False)
@@ -193,7 +192,6 @@ class File(models.Model):
         comodel_name="ir.attachment",
         string="Attachment File",
         prefetch=False,
-        invisible=True,
         ondelete="cascade",
     )
 
@@ -484,6 +482,14 @@ class File(models.Model):
                 raise ValidationError(
                     _("A file must have model and resource ID in attachment storage.")
                 )
+
+    # Added this function since this is already deprecated in odoo17
+    # and it is used in _check_name constraints
+    def name_get(self):
+        vals = []
+        for record in self:
+            vals.append(tuple([record.id, record.name]))
+        return vals
 
     @api.constrains("name")
     def _check_name(self):

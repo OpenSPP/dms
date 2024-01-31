@@ -328,13 +328,17 @@ class DmsDirectory(models.Model):
         for record in self:
             record.res_model = record.model_id.model
 
+    # function retains since this function is used in _check_name constraint
     def name_get(self):
-        if not self.env.context.get("directory_short_name", False):
-            return super().name_get()
         vals = []
         for record in self:
             vals.append(tuple([record.id, record.name]))
         return vals
+
+    @api.depends("name")
+    def _compute_display_name(self):
+        for record in self:
+            record.display_name = record.name
 
     def toggle_starred(self):
         updates = defaultdict(set)

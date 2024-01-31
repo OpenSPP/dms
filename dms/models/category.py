@@ -117,13 +117,10 @@ class Category(models.Model):
         for record in self:
             record.count_files = len(record.file_ids)
 
-    def name_get(self):
-        if not self.env.context.get("category_short_name", False):
-            return super().name_get()
-        vals = []
+    @api.depends("name")
+    def _compute_display_name(self):
         for record in self:
-            vals.append(tuple([record.id, record.name]))
-        return vals
+            record.display_name = record.name
 
     # ----------------------------------------------------------
     # Create

@@ -107,7 +107,7 @@
                 <field name="is_lock_editor" />
                 <field name="permission_write" />
                 <field name="permission_unlink" />
-                <field name="__last_update" />
+                <!-- <field name="__last_update" /> -->
                 <!-- <field name="model_name" /> -->
                 <templates>
                     <t t-name="kanban-box">
@@ -318,14 +318,14 @@
                 decoration-muted="(is_locked and not is_lock_editor)"
                 multi_edit="1"
             >
-                <field name="active" invisible="1" />
-                <field name="is_locked" invisible="1" />
-                <field name="is_lock_editor" invisible="1" />
+                <field name="active" column_invisible="1" />
+                <field name="is_locked" column_invisible="1" />
+                <field name="is_lock_editor" column_invisible="1" />
                 <field name="name" />
                 <field name="write_date" />
                 <field name="size" widget="integer" />
                 <field name="mimetype" />
-                <field name="category_id" invisible="1" />
+                <field name="category_id" column_invisible="1" />
                 <field
                     name="tag_ids"
                     widget="many2many_tags"
@@ -366,14 +366,14 @@
                         name="lock"
                         type="object"
                         string="Lock"
-                        attrs="{'invisible':['|',('is_locked', '!=', False),('permission_write', '=', False)]}"
+                        invisible="is_locked or not permission_write"
                     />
                     <button
                         class="oe_highlight"
                         name="unlock"
                         type="object"
                         string="Unlock"
-                        attrs="{'invisible':['|',('is_locked', '=', False),('is_lock_editor', '=', False)]}"
+                        invisible="not is_locked or not is_lock_editor"
                     />
                     <button
                         name="%(portal.portal_share_action)d"
@@ -387,7 +387,7 @@
                         name="web_ribbon"
                         title="Archived"
                         bg_color="bg-danger"
-                        attrs="{'invisible': [('active', '=', True)]}"
+                        invisible="active"
                     />
                     <div class="oe_button_box" name="button_box" />
                     <field
@@ -408,7 +408,7 @@
                                 name="path_json"
                                 widget="path_json"
                                 options="{'prefix': True, 'suffix': False}"
-                                attrs="{'invisible': ['|', ('name', '=', False), ('directory_id', '=', False)]}"
+                                invisible="not name or not directory_id"
                             />
                         </h4>
                     </div>
@@ -458,16 +458,16 @@
                         <field
                             name="res_model"
                             readonly="True"
-                            attrs="{'invisible': [('storage_id_save_type', '!=', 'attachment')]}"
+                            invisible="storage_id_save_type != 'attachment'"
                         />
                         <field
                             name="res_id"
                             readonly="True"
-                            attrs="{'invisible': [('storage_id_save_type', '!=', 'attachment')]}"
+                            invisible="storage_id_save_type != 'attachment'"
                         />
                         <field
                             name="record_ref"
-                            attrs="{'invisible': [('storage_id_save_type', '!=', 'attachment')]}"
+                            invisible="storage_id_save_type != 'attachment'"
                         />
                     </group>
                     <notebook>
@@ -592,8 +592,8 @@
                 create="0"
                 delete="0"
             >
-                <field name="is_locked" invisible="1" />
-                <field name="is_lock_editor" invisible="1" />
+                <field name="is_locked" column_invisible="1" />
+                <field name="is_lock_editor" column_invisible="1" />
                 <field name="name" />
                 <field name="write_date" />
                  <field name="size" widget="integer" />

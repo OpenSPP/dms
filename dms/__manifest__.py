@@ -4,7 +4,7 @@
 {
     "name": "Document Management System",
     "summary": """Document Management System for Odoo""",
-    "version": "16.0.1.1.1",
+    "version": "17.0.1.0.0",
     "category": "Document Management",
     "license": "LGPL-3",
     "website": "https://github.com/OCA/dms",
@@ -37,10 +37,11 @@
         ],
         "web.assets_backend": [
             "dms/static/src/scss/*",
-            "dms/static/src/js/fields/*",
-            "dms/static/src/js/views/*.esm.js",
-            "dms/static/src/js/views/*.xml",
-            "dms/static/src/js/views/fields/binary/*",
+            # so many deprecated js functions/class, need to find a way to fix this
+            # "dms/static/src/js/fields/*",
+            # "dms/static/src/js/views/*.esm.js",
+            # "dms/static/src/js/views/*.xml",
+            # "dms/static/src/js/views/fields/binary/*",
         ],
         "web.assets_frontend": ["dms/static/src/js/dms_portal_tour.js"],
     },
