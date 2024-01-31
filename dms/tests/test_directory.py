@@ -195,9 +195,9 @@ class DirectoryMailTestCase(DirectoryTestCase):
     @mute_logger("odoo.addons.mail.mail_thread")
     def test_mail_alias_files(self):
         self.directory.write({"alias_process": "files", "alias_name": "directory+test"})
-        with open(os.path.join(_path, "tests", "data", "mail01.eml"), "r") as file:
+        with open(os.path.join(_path, "tests", "data", "mail01.eml")) as file:
             self.env["mail.thread"].message_process(None, file.read())
-        with open(os.path.join(_path, "tests", "data", "mail02.eml"), "r") as file:
+        with open(os.path.join(_path, "tests", "data", "mail02.eml")) as file:
             self.env["mail.thread"].message_process(None, file.read())
 
     @mute_logger("odoo.addons.mail.mail_thread")
@@ -205,7 +205,7 @@ class DirectoryMailTestCase(DirectoryTestCase):
         self.directory.write(
             {"alias_process": "directory", "alias_name": "directory+test"}
         )
-        with open(os.path.join(_path, "tests", "data", "mail01.eml"), "r") as file:
+        with open(os.path.join(_path, "tests", "data", "mail01.eml")) as file:
             self.env["mail.thread"].message_process(None, file.read())
-        with open(os.path.join(_path, "tests", "data", "mail02.eml"), "r") as file:
+        with open(os.path.join(_path, "tests", "data", "mail02.eml")) as file:
             self.env["mail.thread"].message_process(None, file.read())

@@ -75,10 +75,7 @@ def multi_users(users=False, reset=True, raise_exception=True, callback=False):
                         _logger.error(result["error"], exc_info=True)
                     test_fails.append(result)
             if test_fails:
-                message = "{} out of {} tests failed".format(
-                    len(test_fails),
-                    len(test_results),
-                )
+                message = f"{len(test_fails)} out of {len(test_results)} tests failed"
                 if raise_exception and test_fails[0]["error"]:
                     raise test_fails[0]["error"]
                 elif raise_exception:
