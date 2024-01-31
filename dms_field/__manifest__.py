@@ -5,7 +5,7 @@
     "name": "DMS Field",
     "summary": """
         Create DMS View and allow to use them inside a record""",
-    "version": "15.0.1.0.2",
+    "version": "17.0.1.0.0",
     "license": "LGPL-3",
     "author": "Creu Blanca,Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/dms",
@@ -21,7 +21,7 @@
             "dms_field/static/src/js/**/*",
             "dms_field/static/src/scss/**/*",
         ],
-        "web.assets_qweb": ["dms_field/static/src/xml/**/*"],
+        "web.assets_frontend": ["dms_field/static/src/xml/**/*"],
     },
     "qweb": ["static/src/xml/*.xml"],
     "demo": ["demo/partner_dms.xml"],
