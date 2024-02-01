@@ -31,10 +31,10 @@
         "views/dms_portal_templates.xml",
     ],
     "assets": {
-        "mail.assets_messaging": [
-            ("include", "mail.assets_core_messaging"),
-            "dms/static/src/models/*.js",
-        ],
+        # "mail.assets_messaging": [
+        #    ("include", "mail.assets_core_messaging"),
+        #    "dms/static/src/models/*.js",
+        # ],
         "web.assets_backend": [
             "dms/static/src/scss/*",
             # so many deprecated js functions/class, need to find a way to fix this
@@ -43,7 +43,7 @@
             # "dms/static/src/js/views/*.xml",
             # "dms/static/src/js/views/fields/binary/*",
         ],
-        "web.assets_frontend": ["dms/static/src/js/dms_portal_tour.js"],
+        # "web.assets_frontend": ["dms/static/src/js/dms_portal_tour.js"],
     },
     "demo": [
         "demo/res_users.xml",
