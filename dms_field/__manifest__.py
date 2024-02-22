@@ -17,11 +17,11 @@
         "security/ir.model.access.csv",
     ],
     "assets": {
-        "web.assets_backend": [
-            "dms_field/static/src/js/**/*",
-            "dms_field/static/src/scss/**/*",
-        ],
-        "web.assets_frontend": ["dms_field/static/src/xml/**/*"],
+        # "web.assets_backend": [
+        #    "dms_field/static/src/js/**/*",
+        #    "dms_field/static/src/scss/**/*",
+        # ],
+        # "web.assets_frontend": ["dms_field/static/src/xml/**/*"],
     },
     "qweb": ["static/src/xml/*.xml"],
     "demo": ["demo/partner_dms.xml"],
