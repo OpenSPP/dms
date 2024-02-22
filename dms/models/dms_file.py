@@ -123,7 +123,7 @@ class File(models.Model):
         compute_sudo=True,
     )
     require_migration = fields.Boolean(
-        compute="_compute_migration", store=True, compute_sudo=True
+        compute="_compute_migration", store=False, compute_sudo=True
     )
 
     content_file = fields.Binary(attachment=True, prefetch=False)
